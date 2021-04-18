@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const url = require('url');
 const studentSchema = require('../model/studentModel');
 
 router.post('/add', function (req, res){
@@ -17,9 +18,10 @@ router.post('/add', function (req, res){
 });
 
 router.get("/getDetails",function(req,res){
-    console.log("url", req.url);
+    const path = req.url;
+    const queryParamObjects = url.parse(path, true).query;
     studentSchema.find(
-        { studentFirstName: "raju"},
+        { studentFirstName: queryParamObjects.name},
         {_id: 0, _v: 0 }, 
         function(err,data){
         if(err){
